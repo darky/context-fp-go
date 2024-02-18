@@ -214,3 +214,15 @@ func getCacheOrCall[C, T any](ctx *C, depFn *func(ctx *C) T) T {
 	}
 	return depResp
 }
+
+func Sfp[T comparable, S any](fn func(state S, payload T) S, init S) func(payload T) S {
+	var state S = init
+	var null T // TODO https://github.com/golang/go/issues/53656
+	return func(payload T) S {
+		if payload == null {
+			return state
+		}
+		state = fn(state, payload)
+		return state
+	}
+}

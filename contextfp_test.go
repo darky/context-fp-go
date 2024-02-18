@@ -666,3 +666,20 @@ func TestGenerics9(t *testing.T) {
 		9,
 	)
 }
+
+func TestSfpBasic(t *testing.T) {
+	numbers := Sfp(func(ns []int, payload int) []int {
+		return append(ns, payload)
+	}, []int{})
+	numbers(1)
+	numbers(2)
+	numbers(3)
+	assert.Equal(t,
+		len(numbers(0)),
+		3,
+	)
+	assert.Equal(t,
+		numbers(0),
+		[]int{1, 2, 3},
+	)
+}
