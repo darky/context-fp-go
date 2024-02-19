@@ -668,18 +668,66 @@ func TestGenerics9(t *testing.T) {
 }
 
 func TestSfpBasic(t *testing.T) {
-	numbers := Sfp(func(ns []int, payload int) []int {
-		return append(ns, payload)
-	}, []int{})
-	numbers(1)
-	numbers(2)
-	numbers(3)
+	type N struct {
+		n int
+	}
+	numbers := Sfp(
+		func(ns []int, payload *N) []int {
+			return append(ns, payload.n)
+		},
+		[]int{},
+	)
+	numbers(&N{1})
+	numbers(&N{2})
+	numbers(&N{3})
 	assert.Equal(t,
-		len(numbers(0)),
+		len(numbers(nil)),
 		3,
 	)
 	assert.Equal(t,
-		numbers(0),
+		numbers(nil),
 		[]int{1, 2, 3},
+	)
+}
+
+func TestSfpWithCfp(t *testing.T) {
+	type N struct {
+		n int
+	}
+	type Context struct {
+		incNumber int
+	}
+	numbers := func(ctx *Context) func(payload *N) []int {
+		return Sfp(
+			func(ns []int, payload *N) []int {
+				return append(ns, payload.n+ctx.incNumber)
+			},
+			[]int{},
+		)
+	}
+	addNumber1 := Cfp1(&numbers, func(ns func(payload *N) []int) []int {
+		return ns(&N{1})
+	})
+	addNumber2 := Cfp1(&numbers, func(ns func(payload *N) []int) []int {
+		return ns(&N{2})
+	})
+	addNumber3 := Cfp1(&numbers, func(ns func(payload *N) []int) []int {
+		return ns(&N{3})
+	})
+	numbersToString := Cfp4(
+		&numbers,
+		&addNumber1,
+		&addNumber2,
+		&addNumber3,
+		func(ns func(payload *N) []int, n1 []int, n2 []int, n3 []int) string {
+			return strings.Join(
+				lo.Map(ns(nil), func(n int, i int) string { return fmt.Sprintf("%v", n) }),
+				",",
+			)
+		},
+	)
+	assert.Equal(t,
+		numbersToString(&Context{incNumber: 1}),
+		"2,3,4",
 	)
 }
