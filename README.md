@@ -23,8 +23,8 @@ if you want Dependency injection for Golang using plain functions, you are in th
 
 ```golang
 import (
-	"github.com/samber/lo"
-	"github.com/darky/context-fp-go"
+  "github.com/samber/lo"
+  "github.com/darky/context-fp-go"
 )
 
 type Context struct {
@@ -56,8 +56,8 @@ assert.Equal(t,
 
 ```golang
 import (
-	"github.com/samber/lo"
-	"github.com/darky/context-fp-go"
+  "github.com/samber/lo"
+  "github.com/darky/context-fp-go"
 )
 
 type Context struct {
@@ -95,7 +95,7 @@ assert.Equal(t, called, 1)
 
 ```golang
 import (
-	"github.com/darky/context-fp-go"
+  "github.com/darky/context-fp-go"
 )
 
 type User struct {
@@ -127,7 +127,7 @@ assert.Equal(
 
 ```golang
 import (
-	"github.com/darky/context-fp-go"
+  "github.com/darky/context-fp-go"
 )
 
 type N struct {
