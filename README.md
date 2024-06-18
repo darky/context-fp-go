@@ -174,4 +174,4 @@ assert.Equal(t,
 ## See also
 
 - [context-fp](https://github.com/darky/context-fp) - Functional programming context for TypeScript
-- [context-fp-gleam](https://github.com/darky/context-fp-gleam) - Functional programming context for Gleam
+- [functx](https://github.com/darky/functx) - Functional programming context for Gleam
